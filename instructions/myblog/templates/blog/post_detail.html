@@ -1,0 +1,24 @@
+<html>
+<head><title>Post Detail</title></head>
+<body>
+{%extends 'blog/base.html'%}
+
+
+{% block content %}
+
+{% for p in post %}
+
+<p>Posts:{{p.post_title}}</p>
+
+{% endfor %}
+
+{% for comm in comment %}
+<ul>
+<li>Comment Author:{{comm.comment_author}}</li>
+<li>Comment:{{comm.comment_body}}</li>
+</ul>
+{% endfor %}
+{% endblock %}
+
+</body>
+</html>

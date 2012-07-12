@@ -1,0 +1,23 @@
+<html>
+<head><title>Search Post</title></head>
+<body>
+
+{% extends "blog/base.html"%}
+
+
+{% block content %}
+
+<p>The word '{{term}}' can be found in the following post(s):</p>
+
+{% for value in results %}
+<ul>
+<li>Post Title:{{value.post_title}}</li>
+<li>Content:{{value.post_body}}</li>
+</ul>
+{% endfor %}
+
+
+{% endblock %}
+
+</body>
+</html>

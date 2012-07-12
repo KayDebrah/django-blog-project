@@ -1,4 +1,6 @@
 from django.db import models
+import re
+from django.contrib import admin
 
 # Create your models here.
 
@@ -15,6 +17,8 @@ class Author(models.Model):
 	def __unicode__(self):
 	        return self.name
 
+
+
 class Post(models.Model):
 	post_title=models.CharField(max_length=50)	
 	post_author=models.ForeignKey(Author)
@@ -25,6 +29,31 @@ class Post(models.Model):
 
 	def __unicode__(self):
 	        return self.post_title
+	
+	def limit_post(self):
+	        return self.post_body[:60]
+
+
+	@models.permalink
+	def get_absolute_url(self):
+		return ('post_detail',(),{'id':self.id,'showComments':'true/'})
+
+
+
+	
+	
+
+
+'''
+class PostInline(admin.TabularInline):
+		model = Post
+
+class AuthorAdmin(admin.ModelAdmin):
+		inlines = [PostInline]
+
+'''
+
+
 
 class Comment(models.Model):
 	comment_date=models.DateField()
@@ -34,7 +63,26 @@ class Comment(models.Model):
 
 	def __unicode__(self):
 	        return self.comment_body
+	def limit_body(self):
+	        return self.comment_body[:60]
 
+	
+class CommentInline(admin.TabularInline):
+	model=Comment	
+	#list_display=('post_title','post_author','post_create_date','post_updated_date')
+	#list_filter = ('post_create_date',)
+
+class PostAdmin(admin.ModelAdmin):
+		list_display = ('post_title', 'post_create_date','post_updated_date')
+		list_filter = ('post_create_date',)
+		#ordering = ('-publication_date')
+		search_fields = ('post_title',)
+		inlines = [CommentInline]
+
+#
+class CommentAdmin(admin.ModelAdmin):
+	list_display=('comment_post','limit_body','comment_author','comment_date',)
+	list_filter = ('comment_date','comment_author',)
 
 class Reply(models.Model):
 	reply_Date=models.DateField()

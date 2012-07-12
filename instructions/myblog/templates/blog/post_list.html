@@ -1,0 +1,26 @@
+<html>
+<head>
+<title>Post Lists</title>
+</head>
+<body>
+
+{% extends "blog/base.html" %}
+
+{% block content %}
+{% for eachpost in posts %}
+
+<h2>
+<!-- this is the worst, but simplest way to link to the specific post.
+     Read the document mentioned in the instructions for more info-->
+		<a href="/blog/posts/{{ eachpost.id }}/true">{{ eachpost.post_title }}</a>
+</h2>
+
+<li>Date Created:{{eachpost.post_create_date}}</li>
+<li>Last Updated:{{eachpost.post_updated_date}}</li>
+<li>{{eachpost.limit_post}}</li>
+
+{% endfor %}
+
+{% endblock %}
+</body>
+</html>
