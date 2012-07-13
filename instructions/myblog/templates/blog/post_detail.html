@@ -6,19 +6,30 @@
 
 {% block content %}
 
-{% for p in post %}
 
-<p>Posts:{{p.post_title}}</p>
+<p>Posts:{{posts.post_title}}</p>
 
-{% endfor %}
+
 
 {% for comm in comment %}
 <ul>
 <li>Comment Author:{{comm.comment_author}}</li>
 <li>Comment:{{comm.comment_body}}</li>
+<div>
+<a href="/blog/posts/edit_comment/{{ comm.id }}/edit">Edit Comment</a>
+</div>
+
 </ul>
 {% endfor %}
-{% endblock %}
 
+<h3>New Comment:</h3>
+<div>
+	<form method="post" action="">
+	{{ form.as_p }}
+	<input type="Submit" name="Submit">	
+	</form>
+</div>
+
+{% endblock %}
 </body>
 </html>

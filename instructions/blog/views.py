@@ -3,6 +3,11 @@
 """
 This code should be copied and pasted into your blog/views.py file before you begin working on it.
 """
+
+from django.forms import ModelForm
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponseRedirect
+
 from django.template import Context, loader
 from django.shortcuts import render_to_response
 
@@ -44,17 +49,50 @@ def post_detail(request, id, showComments=False):
         return HttpResponse(post) 
 '''
 
+class CommentForm(ModelForm):
+	class Meta:
+		model=Comment
+                exclude=['comment_post']
+
+@csrf_exempt
 def post_detail(request, id, showComments=False):
-    posts=Post.objects.filter(pk=id)
-    comments=Comment.objects.filter(comment_post=id)
-    t = loader.get_template('blog/post_detail.html')  
-    c = Context({'post':posts,'comment':comments })    	
-    return HttpResponse(t.render(c))
+     posts=Post.objects.get(pk=id)
+     comments=Comment.objects.filter(comment_post=id)
+     if request.method == 'POST':
+          comment=Comment(comment_post=posts)	
+          form = CommentForm(request.POST,instance=comment)
+          if form.is_valid():
+	       form.save()
+	  return HttpResponseRedirect(request.path)
+     else:
+               form = CommentForm()
+
+     
+     t = loader.get_template('blog/post_detail.html')  
+     c = Context({'post':posts,'comment':comments,'form':form })    	
+     return HttpResponse(t.render(c))
     	
     #for comment in comments:
 	#c = Context({'post':posts,'comment':comment })
     
-        
+
+@csrf_exempt        
+def edit_comment(request,id,edit):
+
+     singlecomment=Comment.objects.get(pk=id)
+     if request.method == 'POST':
+          comment=Comment(comment_post=singlecomment)	
+          form = CommentForm(request.POST,instance=singlecomment)
+          if form.is_valid():
+	       form.save()
+	  return HttpResponseRedirect(request.path)
+     else:
+          form = CommentForm(instance=singlecomment)
+
+     t = loader.get_template('blog/edit_comment.html')
+     c = Context({'comment':singlecomment, 'form':form })
+     return HttpResponse(t.render(c))     
+
 
 
     
