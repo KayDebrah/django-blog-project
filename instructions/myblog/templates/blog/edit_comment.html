@@ -2,14 +2,12 @@
 <head><title>Edit Comment</title></head>
 <body>
 {%extends 'blog/base.html'%}
-
-
 {% block content %}
 <h3>Edit Comment:</h3>
 <div>
-	<form method="post" action="">
+	<form method="post" action="" class="well">
 	{{ form.as_p }}
-	<input type="submit" name="Submit">	
+	<input type="submit" name="Submit" class="btn-info">	
 	</form>
 </div>
 {% endblock %}

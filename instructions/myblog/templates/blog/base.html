@@ -1,45 +1,43 @@
 <html>
 <head>
+<link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css"/>	
+  
 <title>Kay-Blog</title>
-<link href="StyleSheet.css" rel="stylesheet" type="text/css" />
- <style type="text/css">
-        .style3
-        {
-            width: 655px;
-            margin: 125px auto 0px auto;
-            border: 0px solid #808080;
-            -moz-border-radius: 0px;
-            -webkit-border-radius: 0px;
-            -moz-box-shadow: 0px -0px 25px #333;
-            -webkit-box-shadow: 0px -0px 25px #333;
-            color: #000;
-            background-repeat: no-repeat;
-        }
-        .style7
-        {
-            width: 605px;
-        }
-        .style8
-        {
-            width: 19px;
-        }
-    </style>
+
 </head>
 
 <body>
-<a href="/blog/posts/">View Posts</a>
-<div id="content">     
-<table align="center" class="style3">
-<tr> 
+
+<div>
+    <div class="navbar">
+    <div class="navbar-inner">
+    <div class="container">
+    <ul class="nav">
+    <li class="active">
+    <a href="#">Home</a></li>
+    <li><a href="#">About Me</a></li>
+    <li><a href="#">Gallery</a></li>
+    <li><input type="text" class="input-medium search-query"></li>
+    <li><button type="submit" class="btn">Search</button></li>
+    </ul>
+    </div>
+    </div>
+    </div>
+</div>
+
+    
+
+<div id="content" class="container">     
 {% block content %}
 
 
 {% endblock %}
+<!--Body content-->
 
-</tr>
-</table>
 
+                
 
 </div>
+
 </body>
 </html>

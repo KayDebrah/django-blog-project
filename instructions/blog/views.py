@@ -52,14 +52,17 @@ def post_detail(request, id, showComments=False):
 class CommentForm(ModelForm):
 	class Meta:
 		model=Comment
-                exclude=['comment_post']
+#We exclude comment post to prevent the post from displayin on the commentform and also comment_author from displaying the author's name 
+                exclude=['comment_post','comment_author']
 
 @csrf_exempt
 def post_detail(request, id, showComments=False):
      posts=Post.objects.get(pk=id)
      comments=Comment.objects.filter(comment_post=id)
      if request.method == 'POST':
-          comment=Comment(comment_post=posts)	
+          comment=Comment(comment_post=posts)
+          #assigning the logged in user to the comment
+          comment.comment_author=request.user	
           form = CommentForm(request.POST,instance=comment)
           if form.is_valid():
 	       form.save()
@@ -69,7 +72,7 @@ def post_detail(request, id, showComments=False):
 
      
      t = loader.get_template('blog/post_detail.html')  
-     c = Context({'post':posts,'comment':comments,'form':form })    	
+     c = Context({'post':posts,'comment':comments,'form':form,'user':request.user })    	
      return HttpResponse(t.render(c))
     	
     #for comment in comments:
@@ -77,20 +80,21 @@ def post_detail(request, id, showComments=False):
     
 
 @csrf_exempt        
-def edit_comment(request,id,edit):
+def edit_comment(request,id):
 
      singlecomment=Comment.objects.get(pk=id)
      if request.method == 'POST':
-          comment=Comment(comment_post=singlecomment)	
+          #comment=Comment(comment_post=singlecomment)	
           form = CommentForm(request.POST,instance=singlecomment)
           if form.is_valid():
 	       form.save()
-	  return HttpResponseRedirect(request.path)
+	  return HttpResponseRedirect(singlecomment.comment_post.get_absolute_url())
+          #return HttpResponseRedirect(request.path)
      else:
           form = CommentForm(instance=singlecomment)
 
      t = loader.get_template('blog/edit_comment.html')
-     c = Context({'comment':singlecomment, 'form':form })
+     c = Context({'post':singlecomment, 'form':form })
      return HttpResponse(t.render(c))     
 
 

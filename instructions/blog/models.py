@@ -24,7 +24,7 @@ class Post(models.Model):
 	post_author=models.ForeignKey(Author)
 	post_body=models.TextField()
 	category=models.ForeignKey(Category)
-	post_create_date=models.DateField()
+	post_create_date=models.DateField(auto_now="True")
 	post_updated_date=models.DateField()
 
 	def __unicode__(self):
@@ -33,12 +33,16 @@ class Post(models.Model):
 	def limit_post(self):
 	        return self.post_body[:60]
 
+       
+	def get_absolute_url(self):
+		return "/blog/posts/%i/true" % self.id
 
+'''
 	@models.permalink
 	def get_absolute_url(self):
 		return ('post_detail',(),{'id':self.id,'showComments':'true/'})
 
-
+'''
 
 	
 	
@@ -56,7 +60,7 @@ class AuthorAdmin(admin.ModelAdmin):
 
 
 class Comment(models.Model):
-	comment_date=models.DateField()
+	comment_date=models.DateField(auto_now="True")
 	comment_author=models.CharField(max_length=100)
 	comment_body=models.TextField()
 	comment_post=models.ForeignKey(Post)
